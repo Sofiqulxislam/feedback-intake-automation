@@ -62,10 +62,6 @@ flowchart LR
 
 
 
-| File | Purpose |
-
-| --- | --- |
-
 | `workflows/feedback-intake.json` | Main workflow: form, validation, Sheets, alerts |
 
 | `workflows/error-alert.json` | Error workflow: Telegram message when the main workflow fails |
@@ -86,9 +82,6 @@ Create one spreadsheet with two tabs and these headers in row 1. Names must matc
 
 
 
-| Tab | Headers |
-
-| --- | --- |
 
 | Main tab (for example `Sheet1`) | `Name`, `Email`, `Rating`, `Feedback` |
 
