@@ -62,6 +62,11 @@ flowchart LR
 
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> c53695b (Updated README)
 | `workflows/feedback-intake.json` | Main workflow: form, validation, Sheets, alerts |
 
 | `workflows/error-alert.json` | Error workflow: Telegram message when the main workflow fails |
@@ -131,9 +136,6 @@ Publish both workflows. Open the form's \*\*Production URL\*\* (not the Test URL
 
 
 
-| Input | Expected result |
-
-| --- | --- |
 
 | Valid Gmail address, rating 5 | Row saved, no alert |
 
