@@ -1,0 +1,132 @@
+{
+  "name": "Weeklydigest",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                5
+              ],
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b4b5ac4f-9dc7-4495-b41d-5508b1ff988e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_CHAT_ID",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "34e38147-9084-46a0-8a81-9b0b07adc2a2",
+      "name": "Send a text message"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SPREADSHEET_ID",
+          "mode": "list",
+          "cachedResultName": "n8n Spreadsheet"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "e37289b3-f410-44e5-b5fe-7aa436d90267",
+      "name": "Get row(s) in sheet"
+    },
+    {
+      "parameters": {
+        "jsCode": "function parseDate(value) {\n  const s = String(value || \"\").trim();\n  let m = s.match(/^(\\d{4})-(\\d{2})-(\\d{2})$/);      // 2026-09-24\n  if (m) return new Date(+m[1], +m[2] - 1, +m[3]);\n  m = s.match(/^(\\d{2})-(\\d{2})-(\\d{4})$/);          // 24-09-2026\n  if (m) return new Date(+m[3], +m[2] - 1, +m[1]);\n  return null;\n}\n\nconst cutoff = new Date();\ncutoff.setDate(cutoff.getDate() - 7);\n\nconst rows = $input.all()\n  .map(i => i.json)\n  .filter(r => {\n    const d = parseDate(r.Date);\n    return d && d > cutoff;\n  });\n\nif (rows.length === 0) {\n  return [{ json: { message: \"📊 Weekly feedback digest\\nNo new feedback this week.\" } }];\n}\n\nconst ratings = rows.map(r => Number(r.Rating));\nconst avg = ratings.reduce((a, b) => a + b, 0) / ratings.length;\n\nconst counts = {};\nfor (const r of rows) {\n  const c = r.Category || \"none\";\n  counts[c] = (counts[c] || 0) + 1;\n}\nconst categoryLines = Object.entries(counts)\n  .map(([c, n]) => `${c}: ${n}`)\n  .join(\"\\n\");\n\nconst lowest = rows\n  .filter(r => r.Feedback)\n  .sort((a, b) => Number(a.Rating) - Number(b.Rating))\n  .slice(0, 3)\n  .map(r => `(${r.Rating}/5) ${r.Summary || r.Feedback}`)\n  .join(\"\\n\");\n\nconst message =\n  `📊 Weekly feedback digest\\n` +\n  `Responses: ${rows.length}\\n` +\n  `Average rating: ${avg.toFixed(1)}/5\\n\\n` +\n  `By category:\\n${categoryLines}\\n\\n` +\n  `Lowest-rated comments:\\n${lowest || \"none\"}`;\n\nreturn [{ json: { message } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "4418f6ce-9a01-4e09-afe4-02e4e895b7e9",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "nodeGroups": [],
+  "tags": []
+}

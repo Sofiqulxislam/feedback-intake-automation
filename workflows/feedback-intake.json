@@ -53,10 +53,10 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.6,
       "position": [
-        -896,
-        368
+        -48,
+        784
       ],
-      "id": "bcd79781-6a58-443f-b2a4-acf3149d020c",
+      "id": "47d4bd58-9132-412a-afd4-f02a1d75591b",
       "name": "On form submission"
     },
     {
@@ -87,32 +87,26 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        800,
-        272
+        1648,
+        688
       ],
-      "id": "a39f570e-b2dd-4443-902b-5abdb1d8a7d6",
+      "id": "e576f7c8-c017-4da5-b51a-6019853d61bb",
       "name": "If"
     },
     {
       "parameters": {
-        "chatId": "place_holder",
+        "chatId": "YOUR_CHAT_ID",
         "text": "={{ $json.Name }} left a low rating ({{ $json.Rating }}/5)\nCategory: {{ $json.Category }} | Sentiment: {{ $json.Sentiment }}\nSummary: {{ $json.Summary }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1024,
-        48
+        1872,
+        464
       ],
-      "id": "264d81a9-1a16-4249-925f-6a4f7a1eda79",
-      "name": "Send a text message",
-      "credentials": {
-        "telegramApi": {
-          "id": "TG_acc",
-          "name": "Telegram account"
-        }
-      }
+      "id": "1e49cf43-b63d-4d92-a502-ea251a08ddc5",
+      "name": "Send a text message"
     },
     {
       "parameters": {
@@ -120,12 +114,14 @@
         "documentId": {
           "__rl": true,
           "value": "YOUR_SPREADSHEET_ID",
-          "mode": "list"
+          "mode": "list",
+          "cachedResultName": "n8n Spreadsheet"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
-          "mode": "list"
+          "mode": "list",
+          "cachedResultName": "Sheet1"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -136,7 +132,8 @@
             "Feedback": "={{ $json.feedback }}",
             "Category": "={{ $json.category }}",
             "Sentiment": "={{ $json.sentiment }}",
-            "Summary": "={{ $json.summary }}"
+            "Summary": "={{ $json.summary }}",
+            "Date": "={{ $json.Date }}"
           },
           "matchingColumns": [
             "Email"
@@ -211,6 +208,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -221,25 +228,19 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        576,
-        272
+        1424,
+        688
       ],
-      "id": "ce9a32f0-1214-4f36-8d2d-521fe309a053",
-      "name": "Append or update row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "google_id",
-          "name": "Google Sheets account"
-        }
-      }
+      "id": "e9488b10-ea4d-400e-b2c1-dd66f0ab6de3",
+      "name": "Append or update row in sheet"
     },
     {
       "parameters": {
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "channel_placeholder",
-          "mode": "url"
+          "value": "YOUR_CHANNEL_ID",
+          "mode": "id"
         },
         "text": "={{ $json.Name }} left a low rating ({{ $json.Rating }}/5)\nCategory: {{ $json.Category }} | Sentiment: {{ $json.Sentiment }}\nSummary: {{ $json.Summary }}",
         "otherOptions": {}
@@ -247,27 +248,21 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.7,
       "position": [
-        1024,
-        240
+        1872,
+        656
       ],
-      "id": "51789990-f97a-47b4-a9a2-99f729c01526",
-      "name": "Send a message",
-      "credentials": {
-        "slackApi": {
-          "id": "slack_placeholder",
-          "name": "Slack account"
-        }
-      }
+      "id": "6d9095cf-0f9e-4d03-aaa8-0ce75574e8d9",
+      "name": "Send a message"
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1024,
-        432
+        1872,
+        848
       ],
-      "id": "9c235441-4168-4307-8dab-6e111bf01d07",
+      "id": "f0596ba0-2676-4d85-97c1-d2de14e91fd6",
       "name": "No Operation, do nothing"
     },
     {
@@ -306,10 +301,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        -672,
-        368
+        176,
+        784
       ],
-      "id": "abc3e2d3-4526-4010-8186-614fb11774b7",
+      "id": "296398a4-1a4e-4fe7-b2ec-019715685f0f",
       "name": "Edit Fields"
     },
     {
@@ -341,10 +336,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -448,
-        368
+        400,
+        784
       ],
-      "id": "701f1a84-a019-4beb-bdab-368a3a3c4af3",
+      "id": "525227a1-a3c9-4261-a64f-5e7fa428427b",
       "name": "If1"
     },
     {
@@ -427,17 +422,11 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -224,
-        464
+        624,
+        880
       ],
-      "id": "bc9d9538-92ac-4a4d-9b06-49a749f66118",
-      "name": "Append row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "sheet_id",
-          "name": "Google Sheets account"
-        }
-      }
+      "id": "3c5e809a-a1d0-4630-9466-c321691ccc88",
+      "name": "Append row in sheet"
     },
     {
       "parameters": {
@@ -467,10 +456,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -224,
-        272
+        624,
+        688
       ],
-      "id": "bab53111-8fff-4141-89b6-d8a653d775b6",
+      "id": "9e6fdfbc-bc6a-4e39-b2fa-969080c2d22a",
       "name": "Has Feedback?"
     },
     {
@@ -500,10 +489,10 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        0,
-        48
+        848,
+        464
       ],
-      "id": "b4eb7308-a364-4c84-9ead-f20193571e80",
+      "id": "5999996d-ef9b-48bf-8727-10e34bf8af89",
       "name": "Information Extractor"
     },
     {
@@ -516,17 +505,11 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        80,
-        288
+        928,
+        704
       ],
-      "id": "27254b7a-11c3-4a96-aa3e-4934b03f40e8",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "bot_id",
-          "name": "Google Gemini(PaLM) Api account 2"
-        }
-      }
+      "id": "531b0c11-652f-49ed-a7e4-305cfc7607b6",
+      "name": "Google Gemini Chat Model"
     },
     {
       "parameters": {
@@ -573,6 +556,12 @@
               "name": "summary",
               "value": "={{ $json.output?.summary ?? '' }}",
               "type": "string"
+            },
+            {
+              "id": "b51de75a-ad4d-494d-9dcb-c1e6d064362e",
+              "name": "Date",
+              "value": "={{ $now.toFormat('dd-MM-yyyy') }}",
+              "type": "string"
             }
           ]
         },
@@ -581,10 +570,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        352,
-        272
+        1200,
+        688
       ],
-      "id": "f7be2214-3338-4c2a-ab48-daca977ef04a",
+      "id": "e1fdc859-eef2-4837-aee2-ab4b7b7ed321",
       "name": "Prepare rows"
     }
   ],
@@ -720,7 +709,9 @@
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
   },
   "nodeGroups": [],
   "tags": []
